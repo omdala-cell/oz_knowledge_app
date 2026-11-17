@@ -4,9 +4,12 @@ workflows:
     max_build_duration: 30
     environment:
       flutter: stable
+      java: 17
     scripts:
-      - name: Initialize native Android project files
-        script: flutter create --org la.oz.knowledge --project-name oz_knowledge_app .
+      - name: Clean and Initialize native Android project files
+        script: |
+          rm -rf android
+          flutter create --org la.oz.knowledge --project-name oz_knowledge_app .
       - name: Ensure Android INTERNET permission and App Label
         script: |
           python3 -c '
@@ -23,6 +26,6 @@ workflows:
       - name: Get Flutter dependencies
         script: flutter pub get
       - name: Build Release APK
-        script: flutter build apk --release
+        script: flutter build apk --release --verbose
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
