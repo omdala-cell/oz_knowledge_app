@@ -1,0 +1,28 @@
+workflows:
+  android-apk-workflow:
+    name: Build OZ Knowledge Hub APK
+    max_build_duration: 30
+    environment:
+      flutter: stable
+    scripts:
+      - name: Initialize native Android project files
+        script: flutter create --org la.oz.knowledge --project-name oz_knowledge_app .
+      - name: Ensure Android INTERNET permission and App Label
+        script: |
+          python3 -c '
+          path = "android/app/src/main/AndroidManifest.xml"
+          with open(path, "r") as f:
+              txt = f.read()
+          if "android.permission.INTERNET" not in txt:
+              txt = txt.replace("<application", "<uses-permission android:name=\"android.permission.INTERNET\"/>\n    <application", 1)
+          import re
+          txt = re.sub(r"android:label=\"[^\"]*\"", "android:label=\"OZ Knowledge Hub\"", txt, count=1)
+          with open(path, "w") as f:
+              f.write(txt)
+          '
+      - name: Get Flutter dependencies
+        script: flutter pub get
+      - name: Build Release APK
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
