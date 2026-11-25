@@ -95,6 +95,14 @@ const List<SiteCategory> appCategories = [
     color: Color(0xFF2E7D32),
     bgColor: Color(0xFFE8F5E9),
   ),
+  SiteCategory(
+    title: 'ຕະຫຼາດການເງິນ',
+    subtitle: 'ຄວາມຮູ້ວິຊາການ ດ້ານວຽກງານຕະຫຼາດການເງິນ',
+    url: 'https://sites.google.com/view/ozfinmarket-la/home',
+    icon: Icons.candlestick_chart_rounded,
+    color: Color(0xFF6A1B9A),
+    bgColor: Color(0xFFF3E5F5),
+  ),
 ];
 
 class MainShellScreen extends StatefulWidget {
@@ -160,7 +168,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
     );
   }
 
-  // 1. ໜ້າຫຼັກ (Home Tab) ຕາມ UX/UI ໃໝ່
+  // 1. ໜ້າຫຼັກ (Home Tab) ຕາມ UX/UI ເດີມ ພ້ອມ 7 ໝວດໝູ່
   Widget _buildHomeTab() {
     return SingleChildScrollView(
       child: Column(
@@ -183,7 +191,6 @@ class _MainShellScreenState extends State<MainShellScreen> {
             ),
             child: Column(
               children: [
-                // ແຖວ Brand OMDALAZONE + ກະດິ່ງແຈ້ງເຕືອນ
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -254,11 +261,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'ແຫຼ່ງຮຽນຮູ້ສຳລັບພະນັກງານຂະແໜງການເງິນ-ເງິນຕາ',
+                  'ແຫຼ່ງຮຽນຮູ້ສຳລັບຂະແໜງການເງິນ',
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 const SizedBox(height: 18),
-                // ກ່ອງ Banner ຍ່ອຍ Digital Knowledge Platform
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
@@ -358,87 +364,33 @@ class _MainShellScreenState extends State<MainShellScreen> {
             ),
           ),
 
-          // ຕາຕະລາງ 6 ໝວດໝູ່ແບບ Horizontal Card
+          // ຕາຕະລາງ 6 ໝວດໝູ່ທຳອິດ + ກາດທີ 7 ແບບເຕັມຄວາມກວ້າງດ້ານລຸ່ມ
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1.55,
-              ),
-              itemCount: appCategories.length,
-              itemBuilder: (context, index) {
-                final item = appCategories[index];
-                return InkWell(
-                  borderRadius: BorderRadius.circular(16),
-                  onTap: () => _openCategory(item),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: item.bgColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(item.icon, color: item.color, size: 24),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                item.title,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Color(0xFF1A1A1A),
-                                  height: 1.2,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                item.subtitle,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 10.5,
-                                  color: Colors.grey.shade600,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+            child: Column(
+              children: [
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1.55,
                   ),
-                );
-              },
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    return _buildCategoryCard(appCategories[index]);
+                  },
+                ),
+                const SizedBox(height: 12),
+                // ໝວດໝູ່ທີ 7: ຕະຫຼາດການເງິນ
+                _buildCategoryCard(appCategories[6], isWide: true),
+              ],
             ),
           ),
 
-          // ສ່ວນ ບົດຮຽນແນະນຳ (Featured Card ດ້ານລຸ່ມ)
+          // ສ່ວນ ບົດຮຽນແນະນຳ
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
             child: Column(
@@ -543,6 +495,76 @@ class _MainShellScreenState extends State<MainShellScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryCard(SiteCategory item, {bool isWide = false}) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () => _openCategory(item),
+      child: Container(
+        width: isWide ? double.infinity : null,
+        padding: EdgeInsets.symmetric(
+          horizontal: isWide ? 16 : 12,
+          vertical: isWide ? 14 : 12,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: item.bgColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(item.icon, color: item.color, size: 24),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: isWide ? 14.5 : 13,
+                      color: const Color(0xFF1A1A1A),
+                      height: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item.subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: isWide ? 12 : 10.5,
+                      color: Colors.grey.shade600,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isWide)
+              Icon(Icons.chevron_right_rounded, color: item.color, size: 24),
+          ],
+        ),
       ),
     );
   }
@@ -717,14 +739,14 @@ class _MainShellScreenState extends State<MainShellScreen> {
                           color: Color(0xFF0D47A1)),
                       title: Text('ກ່ຽວກັບແອັບພລິເຄຊັນ'),
                       subtitle: Text(
-                          'ສູນລວມຄວາມຮູ້ວິຊາການດ້ານການເງິນ-ການທະນາຄານ, ລະບົບການຊຳລະ, ການຫັນເປັນດິຈິຕອນ, ນິຕິກຳ, ຂໍ້ມູນຂ່າວສານສິນເຊື່ອ ແລະ ປະກັນໄພເງິນຝາກ.'),
+                          'ສູນລວມຄວາມຮູ້ວິຊາການດ້ານການເງິນ-ການທະນາຄານ, ລະບົບການຊຳລະ, ການຫັນເປັນດິຈິຕອນ, ນິຕິກຳ, ຂໍ້ມູນຂ່າວສານສິນເຊື່ອ, ປະກັນໄພເງິນຝາກ ແລະ ຕະຫຼາດການເງິນ.'),
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.verified_rounded,
                           color: Color(0xFF2E7D32)),
                       title: Text('ເວີຊັນແອັບ'),
-                      subtitle: Text('Version 2.0 (UX/UI Edition)'),
+                      subtitle: Text('Version 2.1 (7 Knowledge Hubs)'),
                     ),
                   ],
                 ),
